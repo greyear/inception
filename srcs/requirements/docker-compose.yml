@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  nginx:
+    build: ./requirements/nginx/  # путь к Dockerfile для сборки образа
+    container_name: nginx     # имя контейнера (удобно при отладке)
+    ports:
+      - "80:80" # host_port:container_port
+  
+  wordpress:
+    build: ./requirements/wordpress/
+
+  mariadb:
+    build: ./requirements/mariadb/
+
