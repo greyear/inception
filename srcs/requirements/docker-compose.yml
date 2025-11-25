@@ -3,14 +3,42 @@ version: "3.8"
 services:
   nginx:
     build: ./nginx/  # путь к Dockerfile для сборки образа
-    container_name: nginx     # имя контейнера (удобно при отладке)
+    container_name: nginx # имя контейнера (удобно при отладке)
     ports:
       - "80:80" # host_port:container_port
-  
+    volumes:
+      - ./web:/var/www/html  # монтируем локальную папку web в контейнер, чтобы nginx и wordpress имели доступ к одним и тем же файлам
+    depends_on:
+      - wordpress
+    restart: unless-stopped
+
   wordpress:
     build: ./wordpress/
     container_name: wp-php
+    volumes:
+      - ./web:/var/www/html  # монтируем локальную папку web в контейнер
+    # healthcheck помогает понять готов ли php-fpm
+    depends_on:
+      - mariadb
+    healthcheck:
+      test: ["CMD", "pgrep", "php-fpm82"]
+      interval: 5s
+      timeout: 2s
+      retries: 5
+    restart: unless-stopped
 
+  mariadb:
+    build: ./mariadb/
+    container_name: mariadb
+    volumes:
+      - mariadb_data:/var/lib/mysql  # сохраняем данные базы вне контейнера
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+      MYSQL_DATABASE: wordpress
+      MYSQL_USER: wp_user
+      MYSQL_PASSWORD_FILE: /run/secrets/db_password
 
-  #mariadb:
-  #  build: ./requirements/mariadb/
+volumes:
+  mariadb_data:
+    driver: local

@@ -6,13 +6,13 @@ FROM alpine:3.18
 RUN apk update && apk add --no-cache nginx openssl
 #openssl может понадобиться для генерации сертификатов или для утилит управления TLS
 
-RUN mkdir -p /run/nginx
+RUN mkdir -p /run/nginx /var/www/html
 #создаем папку для хранения runtime файлов nginx
 
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 #копируем наш конфиг nginx в контейнер
 
-EXPOSE 443
+EXPOSE 80 443
 #говорим докеру, что контейнер слушает порт 443
 
 CMD ["nginx", "-g", "daemon off;"]
