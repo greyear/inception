@@ -1,0 +1,15 @@
+# WordPress core
+srcs/requirements/web/wp-*.php
+srcs/requirements/web/wp-admin/
+srcs/requirements/web/wp-includes/
+srcs/requirements/web/wp-content/
+
+# WP-CLI
+srcs/requirements/web/wp-cli.phar
+
+# Конфиги с паролями
+srcs/requirements/web/wp-config.php
+
+# Логи и tmp файлы
+*.log
+*.tmp

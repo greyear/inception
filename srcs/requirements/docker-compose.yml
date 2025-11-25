@@ -6,6 +6,7 @@ services:
     container_name: nginx # имя контейнера (удобно при отладке)
     ports:
       - "80:80" # host_port:container_port
+      - "443:443"
     volumes:
       - ./web:/var/www/html  # монтируем локальную папку web в контейнер, чтобы nginx и wordpress имели доступ к одним и тем же файлам
     depends_on:
@@ -14,7 +15,7 @@ services:
 
   wordpress:
     build: ./wordpress/
-    container_name: wp-php
+    container_name: wordpress
     volumes:
       - ./web:/var/www/html  # монтируем локальную папку web в контейнер
     # healthcheck помогает понять готов ли php-fpm
@@ -33,11 +34,11 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql  # сохраняем данные базы вне контейнера
     restart: unless-stopped
-    environment:
-      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
-      MYSQL_DATABASE: wordpress
-      MYSQL_USER: wp_user
-      MYSQL_PASSWORD_FILE: /run/secrets/db_password
+    #environment:
+     # MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
+     # MYSQL_DATABASE: wordpress
+     # MYSQL_USER: wp_user
+     # MYSQL_PASSWORD_FILE: /run/secrets/db_password
 
 volumes:
   mariadb_data:
