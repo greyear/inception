@@ -1,24 +1,30 @@
 #!/bin/sh
 set -e
 
-# initialize database if empty
+# Initialize database if empty
 if [ ! -d /var/lib/mysql/mysql ]; then
     echo "Initializing MariaDB..."
-    mysql_install_db --user=mysql --basedir=/usr --datadir=/var/lib/mysql
+    mariadb-install-db --user=mysql --datadir=/var/lib/mysql
 fi
 
-# start MariaDB in background
-mysqld_safe --datadir=/var/lib/mysql &
+# Start mysqld in background as mysql user
+mysqld --user=mysql --datadir=/var/lib/mysql &
+pid="$!"
 
-# wait until server is ready
-sleep 5
+# Wait until MariaDB is ready
+until mysqladmin ping --silent; do
+    echo "Waiting for MariaDB..."
+    sleep 1
+done
 
-# run init script only on first run
-if [ -f /etc/mysql/init.sql ]; then
-    echo "Running init.sql..."
-    mysql < /etc/mysql/init.sql
-    rm /etc/mysql/init.sql
+# Execute all init scripts once
+if ls /docker-entrypoint-initdb.d/*.sql > /dev/null 2>&1; then
+    echo "Running init scripts..."
+    for f in /docker-entrypoint-initdb.d/*.sql; do
+        echo "Running $f..."
+        mariadb < "$f"
+        rm "$f"
+    done
 fi
 
-# bring server to foreground
-wait
+wait "$pid"

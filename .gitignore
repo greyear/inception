@@ -1,14 +1,12 @@
-# WordPress core
-srcs/requirements/web/wp-*.php
-srcs/requirements/web/wp-admin/
-srcs/requirements/web/wp-includes/
-srcs/requirements/web/wp-content/
+# Files that shouldn't be tracked
+srcs/requirements/web/
+srcs/web
 
-# WP-CLI
-srcs/requirements/web/wp-cli.phar
+# Переменные
+srcs/.env
 
-# Конфиги с паролями
-srcs/requirements/web/wp-config.php
+# Секреты
+secrets/
 
 # Логи и tmp файлы
 *.log
