@@ -6,7 +6,7 @@ srcs/web
 srcs/.env
 
 # Секреты
-secrets/
+secrets/*
 
 # Логи и tmp файлы
 *.log

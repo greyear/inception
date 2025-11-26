@@ -6,18 +6,20 @@ FROM alpine:3.18
 RUN apk update && apk add --no-cache nginx openssl
 #openssl может понадобиться для генерации сертификатов или для утилит управления TLS
 
-RUN mkdir -p /run/nginx /var/www/html
-#создаем папку для хранения runtime файлов nginx
+RUN mkdir -p /run/nginx /var/www/html /etc/nginx/ssl
+# /run/nginx нужно Nginx для PID-файла
+# /var/www/html — корневая папка сайта (WordPress туда кладёт свои файлы).
 
-COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/default.conf /etc/nginx/http.d/default.conf
 #копируем наш конфиг nginx в контейнер
+COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/redirect.conf /etc/nginx/http.d/redirect.conf
+
+# копируем entrypoint
+COPY ./tools/entrypoint.sh /entrypoint.sh
+RUN chmod +x /entrypoint.sh
 
 EXPOSE 80 443
 #говорим докеру, что контейнер слушает порт 443
 
-CMD ["nginx", "-g", "daemon off;"]
-# запускаем nginx в фореграунд режиме (иначе контейнер сразу завершится)
-#демон это программа, которая работает в фоне и не занимает терминал
-#nginx по умолчанию запускается как демон, поэтому мы переопределяем это поведение
-
-#докерфайл нужен для того, чтобы собрать образ с нужными нам параметрами
+CMD ["/entrypoint.sh"]

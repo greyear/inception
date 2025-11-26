@@ -5,10 +5,11 @@ services:
     build: ./requirements/nginx/  # путь к Dockerfile для сборки образа
     container_name: nginx # имя контейнера (удобно при отладке)
     ports:
-      - "80:80" # убери или нет? 
+      - "80:80" # убери или нет?
       - "443:443"
     volumes:
-      - ./web:/var/www/html  # монтируем локальную папку web в контейнер, чтобы nginx и wordpress имели доступ к одним и тем же файлам
+      - ./web:/var/www/html  # мб тут не просто веб, а requirements/wordpress/web:, перепроверь
+      - ./secrets:/etc/nginx/ssl
     depends_on:
       - wordpress
     restart: unless-stopped
