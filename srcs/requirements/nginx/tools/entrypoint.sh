@@ -7,6 +7,7 @@ KEY="$SSL_DIR/azinchen.42.fr.key"
 mkdir -p "$SSL_DIR" #creates folder if doesn't exist
 
 # generate certificate if doesn't exist
+# saves key and cert into files
 if [ ! -f "$CRT" ] || [ ! -f "$KEY" ]; then
     echo "SSL certificates not found. Generating new ones..."
     openssl req -x509 -nodes -days 365 \

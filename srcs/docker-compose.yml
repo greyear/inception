@@ -5,7 +5,6 @@ services:
     build: ./requirements/nginx/  # путь к Dockerfile для сборки образа
     container_name: nginx # имя контейнера (удобно при отладке)
     ports:
-      - "80:80" # убери или нет?
       - "443:443"
     volumes:
       - ./web:/var/www/html  # мб тут не просто веб, а requirements/wordpress/web:, перепроверь
@@ -13,6 +12,7 @@ services:
     depends_on:
       - wordpress
     restart: unless-stopped
+    #использовать ли докер сикретс для шифрования или достаточно того, что я создала папку сикретс и положила ее в гитигнор?
 
   wordpress:
     build: ./requirements/wordpress/
