@@ -28,6 +28,21 @@ services:
       timeout: 2s
       retries: 5
     restart: unless-stopped
+    environment: #should be in .env file?
+      DB_NAME: wordpress
+      DB_USER: wpuser
+      DB_PASS: password
+      DB_HOST: mariadb
+
+      WP_URL: https://azinchen.42.fr
+      WP_TITLE: Inception
+      WP_ADMIN_USER: superuser
+      WP_ADMIN_PASS: StrongPass123
+      WP_ADMIN_EMAIL: superuser@example.com
+
+      WP_USER: author1
+      WP_USER_PASS: User12345
+      WP_USER_EMAIL: author@example.com
 
   mariadb:
     build: ./requirements/mariadb/
@@ -35,11 +50,6 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql  # сохраняем данные базы вне контейнера
     restart: unless-stopped
-    #environment:
-     # MYSQL_ROOT_PASSWORD_FILE: /run/secrets/db_root_password
-     # MYSQL_DATABASE: wordpress
-     # MYSQL_USER: wp_user
-     # MYSQL_PASSWORD_FILE: /run/secrets/db_password
 
 volumes:
   mariadb_data:

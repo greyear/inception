@@ -12,7 +12,7 @@ RUN mkdir -p /run/php /var/www/html
 #создаем папку для хранения runtime файлов php-fpm
 
 COPY ./conf/php-fpm.conf /etc/php82/php-fpm.d/www.conf
-COPY ./install-wp.sh /usr/local/bin/install-wp.sh
+COPY ./tools/install-wp.sh /usr/local/bin/install-wp.sh
 RUN chmod +x /usr/local/bin/install-wp.sh
 
 EXPOSE 9000
