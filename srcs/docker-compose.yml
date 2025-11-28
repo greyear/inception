@@ -7,18 +7,20 @@ services:
     ports:
       - "443:443"
     volumes:
-      - ./web:/var/www/html  # мб тут не просто веб, а requirements/wordpress/web:, перепроверь
+      - wp_data:/var/www/html  # подключаем том с файлами WordPress
       - ./secrets:/etc/nginx/ssl
     depends_on:
       - wordpress
     restart: unless-stopped
     #использовать ли докер сикретс для шифрования или достаточно того, что я создала папку сикретс и положила ее в гитигнор?
+    env_file:
+      - .env
 
   wordpress:
     build: ./requirements/wordpress/
     container_name: wordpress
     volumes:
-      - ./web:/var/www/html  # монтируем локальную папку web в контейнер
+      - wp_data:/var/www/html
     # healthcheck помогает понять готов ли php-fpm
     depends_on:
       - mariadb
@@ -28,21 +30,8 @@ services:
       timeout: 2s
       retries: 5
     restart: unless-stopped
-    environment: #should be in .env file?
-      DB_NAME: wordpress
-      DB_USER: wpuser
-      DB_PASS: password
-      DB_HOST: mariadb
-
-      WP_URL: https://azinchen.42.fr
-      WP_TITLE: Inception
-      WP_ADMIN_USER: superuser
-      WP_ADMIN_PASS: StrongPass123
-      WP_ADMIN_EMAIL: superuser@example.com
-
-      WP_USER: author1
-      WP_USER_PASS: User12345
-      WP_USER_EMAIL: author@example.com
+    env_file:
+      - .env
 
   mariadb:
     build: ./requirements/mariadb/
@@ -50,7 +39,9 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql  # сохраняем данные базы вне контейнера
     restart: unless-stopped
+    env_file:
+      - .env
 
 volumes:
   mariadb_data:
-    driver: local
+  wp_data:
