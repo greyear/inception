@@ -7,8 +7,7 @@ RUN mkdir -p /run/mysqld /var/lib/mysql \
 
 COPY ./conf/my.cnf /etc/my.cnf.d/mariadb-server.cnf
 COPY ./conf/init.sql /docker-entrypoint-initdb.d/init.sql
-COPY entrypoint.sh /entrypoint.sh
-
+COPY ./tools/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
 EXPOSE 3306

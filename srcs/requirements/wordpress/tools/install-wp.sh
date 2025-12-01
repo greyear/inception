@@ -9,7 +9,8 @@ until mysqladmin ping -h"$DB_HOST" -u"$DB_USER" -p"$DB_PASS" >/dev/null 2>&1; do
 done
 echo "MariaDB is ready!"
 
-# Устанавливаем WP-CLI
+# Устанавливаем WP-CLI, командный интерфейс для управления WordPress
+# используем его для установки и настройки WordPress
 if [ ! -f /usr/local/bin/wp ]; then
     echo "Installing WP-CLI..."
     curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
@@ -48,4 +49,4 @@ if [ ! -f wp-config.php ]; then
         --allow-root
 fi
 
-php-fpm82 -F
+exec php-fpm82 -F

@@ -9,6 +9,8 @@ services:
     volumes:
       - wp_data:/var/www/html  # подключаем том с файлами WordPress
       - ../secrets:/etc/nginx/ssl
+    networks:
+      - inception
     depends_on:
       - wordpress
     restart: unless-stopped
@@ -21,6 +23,8 @@ services:
     container_name: wordpress
     volumes:
       - wp_data:/var/www/html
+    networks:
+      - inception
     # healthcheck помогает понять готов ли php-fpm
     depends_on:
       - mariadb
@@ -38,6 +42,8 @@ services:
     container_name: mariadb
     volumes:
       - mariadb_data:/var/lib/mysql  # сохраняем данные базы вне контейнера
+    networks:
+      - inception
     restart: unless-stopped
     env_file:
       - .env
@@ -45,3 +51,9 @@ services:
 volumes:
   mariadb_data:
   wp_data:
+
+#сеть дает возможность взаимодействия между контейнерами
+networks:
+  inception:
+    name: inception
+    driver: bridge
