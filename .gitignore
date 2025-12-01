@@ -1,6 +1,7 @@
 # Files that shouldn't be tracked
 srcs/requirements/web/
 srcs/web
+.DS_Store
 
 # Переменные
 srcs/.env
