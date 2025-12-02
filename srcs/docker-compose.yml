@@ -41,16 +41,29 @@ services:
     build: ./requirements/mariadb/
     container_name: mariadb
     volumes:
-      - mariadb_data:/var/lib/mysql  # сохраняем данные базы вне контейнера
+      - mariadb_data:/var/lib/mysql  #сохраняем данные базы вне контейнера
     networks:
       - inception
     restart: unless-stopped
     env_file:
       - .env
 
-volumes:
+volumes: #for storing data outside containers on host machine
   mariadb_data:
+    name: mariadb_data
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/data/mariadb
+      o: bind
+
   wp_data:
+    name: wp_data
+    driver: local
+    driver_opts:
+      type: none
+      device: ${HOME}/data/wordpress
+      o: bind
 
 #сеть дает возможность взаимодействия между контейнерами
 networks:
