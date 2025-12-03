@@ -1,5 +1,5 @@
 
-FROM alpine:3.18
+FROM alpine:3.21
 #официальный образ alpine, нам нельзя использовать лэйтест
 #penultimate - второй с конца!
 
@@ -13,13 +13,12 @@ RUN mkdir -p /run/nginx /var/www/html /etc/nginx/ssl
 COPY ./conf/default.conf /etc/nginx/http.d/default.conf
 #копируем наш конфиг nginx в контейнер
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
-COPY ./conf/redirect.conf /etc/nginx/http.d/redirect.conf
 
 # копируем entrypoint
 COPY ./tools/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 
-EXPOSE 80 443
+EXPOSE 443
 #говорим докеру, что контейнер слушает порт 443
 
 CMD ["/entrypoint.sh"]

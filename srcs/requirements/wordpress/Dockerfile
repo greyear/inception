@@ -1,5 +1,5 @@
 
-FROM alpine:3.18
+FROM alpine:3.21
 
 RUN apk update && apk add --no-cache \
     php82 php82-fpm php82-mysqli php82-json php82-opcache php82-session php82-mbstring php82-phar mariadb-client curl
