@@ -2,7 +2,7 @@
 FROM alpine:3.21
 
 RUN apk update && apk add --no-cache \
-    php82 php82-fpm php82-mysqli php82-json php82-opcache php82-session php82-mbstring php82-phar mariadb-client curl
+    php82 php82-fpm php82-mysqli php82-json php82-opcache php82-session php82-mbstring php82-phar php82-ctype mariadb-client curl
 #устанавливаем php-fpm и необходимые расширения для работы wordpress
 
 # Устанавливаем лимит памяти PHP
