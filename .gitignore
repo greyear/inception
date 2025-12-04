@@ -1,14 +1,11 @@
-# Files that shouldn't be tracked
+
 srcs/requirements/web/
 srcs/web
 .DS_Store
 
-# Переменные
 srcs/.env
 
-# Секреты
 secrets/*
 
-# Логи и tmp файлы
 *.log
 *.tmp

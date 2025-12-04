@@ -25,7 +25,6 @@ down-v:
 re: down-v build up
 	@echo "$(GREEN)Rebuilt and started all containers.$(NC)"
 
-# Проверка статуса контейнеров
 ps:
 	docker compose -f $(DOCKER_COMPOSE) ps
 
